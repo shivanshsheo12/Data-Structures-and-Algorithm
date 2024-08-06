@@ -22,7 +22,7 @@ Node* convertArr2LL(vector<int> arr){
     Node* head = new Node(arr[0]);
     Node* mover = head;
     for(int i = 1;i<arr.size();i++){
-        Node* temp = new Node(arr[i],nullptr,mover);
+        Node* temp = new Node(arr[i]);
         mover->next = temp;
         mover = temp;
     }
@@ -31,26 +31,17 @@ return head;
 vector<pair<int,int>> removeKeys(int key,Node* head){
     vector<pair<int,int>> pairs;
     Node* temp1 = head;
-    Node* temp2 = head;
-    while (temp2 != nullptr && temp2->next != nullptr) {
-        temp2 = temp2->next;
+    Node* temp2 = head->next;
+    while(temp1 != nullptr){
+        temp2 = temp1->next;
+        while(temp2 != nullptr){
+            if(temp1->data + temp2->data == key){
+                pairs.push_back({temp1->data,temp2->data});
+            }
+            temp2 = temp2->next;
+        }
+        temp1 = temp1->next;
     }
-
-    while(temp1->data <= temp2->data && temp1 != nullptr && temp2 != nullptr){
-        if(temp1->data + temp2->data == key){
-            pairs.push_back({temp1->data,temp2->data});
-            temp1 = temp1->next;
-            temp2 = temp2->prev; 
-        }
-        else if((temp1->data + temp2->data) > key ){
-            temp2 = temp2->prev;
-        }
-        else{
-            temp1 = temp1->next;
-        }
-    }
-
-
 return pairs;
 }
 void printList(Node* head){
@@ -61,7 +52,7 @@ void printList(Node* head){
     }
 }
 int main(){
-    vector<int> arr = {1,2,3,4,5,6,8};
+    vector<int> arr = {1,8,2,3,5,6,4};
     Node* head = convertArr2LL(arr);
 
     int key;
